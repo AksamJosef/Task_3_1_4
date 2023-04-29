@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="table_user">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Age</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userElement : ${users}">
+      <th scope="row"> <span th:text="${userElement.getId()}"/> </th>
+      <td> <span th:text="${userElement.getName()}"/> </td>
+      <td> <span th:text="${userElement.getLastName()}"/> </td>
+      <td> <span th:text="${userElement.getAge()}"/> </td>
+      <td> <span th:text="${userElement.getUsername()}"/> </td>
+      <td> <span th:text=" ${#strings.arrayJoin(userElement.getRoleNames(), ' ')}"/> </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

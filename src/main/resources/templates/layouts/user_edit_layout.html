@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="edit">
+
+    <div class="modal fade" th:id="${'editModal'}+${userElement.id}" tabindex="-1"
+         role="dialog" aria-labelledby="editUserCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!--                                        -->
+                <form th:method="PATCH"
+                      th:action="@{/admin/{id}(id=${userElement.getId()})}"
+                      th:object = "${userElement}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUserLongTitle">Edit user</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center">
+
+                        <!--  ID -->
+                        <div class="mb-3 d-flex flex-column align-items-center disabled">
+                            <label for="id"><b>ID</b></label>
+                            <input type="text"
+                                   th:name="id"
+                                   th:value="*{id}" class="form-control"
+                                   id="id"
+                                   disabled/>
+                        </div>
+
+                        <!--  FIRST NAME -->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="name" class="form-label">First name</label>
+                            <input type="text"
+                                   th:name="name"
+                                   th:value="*{name}" class="form-control"
+                                   id="name"/>
+                        </div>
+
+                        <!--  LAST NAME-->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="lastName" class="form-label">Last name</label>
+                            <input type="text"
+                                   th:name="lastName"
+                                   th:value="*{lastName}" class="form-control"
+                                   id="lastName"/>
+                        </div>
+
+                        <!--  AGE -->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="text"
+                                   th:name="age"
+                                   th:value="*{age}" class="form-control"
+                                   id="age"/>
+                        </div>
+
+                        <!--  EMAIL -->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="text"
+                                   th:name="username"
+                                   th:value="*{username}" class="form-control"
+                                   id="email"/>
+                        </div>
+                        <!--  PASSWORD -->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   th:value="*{password}"
+                                   id="password"
+                                   th:name="password"
+                                   required>
+                        </div>
+                        <!--ROLES -->
+                        <div class="mb-3 d-flex flex-column align-items-center">
+                            <label for="roles" class="form-label">Role</label>
+                            <select
+                                    th:value="*{roles}"
+                                    th:size="${roles.size()}"
+                                    th:multiple="roles"
+                                    id="roles"
+                                    th:name="roles"
+                                    class="form-select w-100"
+                                    required>
+                                <option
+
+                                        th:each="role: ${roles}"
+                                        th:value="${role.getId()}"
+                                        th:text="${role.getRole()}"
+                                        th:selected="${userElement.getRoles().contains(role)}"
+                                />
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
