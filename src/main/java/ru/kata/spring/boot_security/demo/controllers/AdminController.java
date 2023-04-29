@@ -43,47 +43,17 @@ public class AdminController {
     }
 
 
-    //todo: delete
-
-    @GetMapping("/new")
-    public String addNewUser(@ModelAttribute("user") User user) {
-        return "admin_pages/new";
-    }
-
-
     @PostMapping("/new")
-    public String create(@ModelAttribute("newUser") @Valid User newUser,
-                         BindingResult bindingResult) {
-
-
-        userValidator.validate(newUser, bindingResult);
-
-//        if (bindingResult.hasErrors()) return "admin_pages/admin";
-//        System.out.println(roles);
-//        newUser.setRoles(roles);
+    public String create(@ModelAttribute("newUser") User newUser) {
 
         userService.addAsUser(newUser);
-
-        System.out.println(newUser.getRoles());
-
         return "redirect:/admin";
     }
 
 
-//    @GetMapping("/{id}")
-//    public String editUser(Model model, @PathVariable("id") int id) {
-//        model.addAttribute("selectedUser", userService.getUserById(id));
-//        return "redirect:/admin";
-//    }
-
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute ("user") @Valid User updated,
-                         BindingResult bindingResult,
+    public String update(@ModelAttribute ("user") User updated,
                          @PathVariable("id") int id) {
-
-//        userValidator.validate(user, bindingResult);
-//        if (bindingResult.hasErrors()) return "admin_pages/edit";
-        System.out.println(updated.getRoles());
         userService.update(id, updated);
         return "redirect:/admin";
     }
