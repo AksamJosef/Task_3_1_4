@@ -52,14 +52,13 @@ public class AdminController {
 
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute ("user") User updated,
-                         @PathVariable("id") int id) {
-        userService.update(id, updated);
+    public String update(@ModelAttribute ("user") User updated) {
+        userService.update(updated);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable Long id) {
         userService.delete(id);
         return "redirect:/admin";
     }

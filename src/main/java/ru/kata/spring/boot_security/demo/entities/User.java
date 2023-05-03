@@ -5,10 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "email")
     @NotEmpty(message = "Username can't be empty")
@@ -42,11 +39,9 @@ public class User {
     private int age;
 
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                            CascadeType.REFRESH, CascadeType.DETACH}
-                            , fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public void addRole(Role role) {
@@ -54,11 +49,11 @@ public class User {
         roles.add(role);
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -114,10 +109,23 @@ public class User {
 
 
         return roles.stream()
-        .map(role -> role.getRole().replace("ROLE_", ""))
-        .collect(Collectors.toCollection(HashSet::new));
+                .map(role -> role.getRole().replace("ROLE_", ""))
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, name, lastName, age, roles);
+    }
 
     @Override
     public String toString() {
